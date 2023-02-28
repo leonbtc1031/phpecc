@@ -659,7 +659,27 @@ class JacobianPoint
      *     Perform two multiplications of aP and bQ, then add them together,
      * (Unsafe based on exposed Private Key).
      */
+    /* OLD CODE
     public function multiplyAndAddUnsafe(Point $Q, \GMP $a, \GMP $b): bool | JacobianPoint
+    {
+        $P = $this->getBase();
+
+        if (gmp_cmp($a, 0) === 0 || gmp_cmp($a, 1) === 0 || !$this->equals($P)) {
+            $aP = $P->multiplyUnsafe($a);
+        } else {
+            $aP = $P->mul($a);
+        }
+
+        $bS = $P->fromAffine($Q);
+        $bQ = $bS->multiplyUnsafe($b);
+
+        $sum = $aP->add($bQ);
+
+        return $sum->equals($this->getZero()) ? false : $sum->toAffine();
+    }
+    */
+
+    public function multiplyAndAddUnsafe(Point $Q, \GMP $a, \GMP $b): bool
     {
         $P = $this->getBase();
 
