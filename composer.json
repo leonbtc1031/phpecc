@@ -3,7 +3,7 @@
     "description": "PHP Elliptic Curve Cryptography library",
     "type": "library",
     "homepage": "https://github.com/public-square/phpecc",
-    "keywords": ["secp256k1", "secp256r1", "nistp192", "nistp224", "nistp256", "nistp384", "nistp521", "ECDSA", "diffie", "hellman", "ECDH", "elliptic", "curve", "phpecc"],
+    "keywords": ["schnorr", "secp256k1", "secp256r1", "nistp192", "nistp224", "nistp256", "nistp384", "nistp521", "ECDSA", "diffie", "hellman", "ECDH", "elliptic", "curve", "phpecc"],
     "license": "MIT",
     "authors": [
         {
@@ -21,6 +21,12 @@
             "name": "Thomas Kerin",
             "email": "afk11@users.noreply.github.com",
             "role": "Maintainer"
+        },
+        {
+            "name": "Ology Newswire, Inc",
+            "email": "protocol@vpsqr.com",
+            "homepage": "https://vpsqr.com/",
+            "role": "Maintainer"
         }
     ],
     "require": {
@@ -32,6 +38,9 @@
         "phpunit/phpunit": "^6.0||^8.0||^9.0",
         "squizlabs/php_codesniffer": "^2.0",
         "symfony/yaml": "^2.6|^3.0"
+    },
+    "replace": {
+        "mdanter/ecc": "1.0.0"
     },
     "autoload": {
         "psr-4": {
