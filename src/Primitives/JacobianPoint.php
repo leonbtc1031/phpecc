@@ -679,7 +679,7 @@ class JacobianPoint
     }
     */
 
-    public function multiplyAndAddUnsafe(Point $Q, \GMP $a, \GMP $b): bool
+    public function multiplyAndAddUnsafe(Point $Q, \GMP $a, \GMP $b): JacobianPoint
     {
         $P = $this->getBase();
 
