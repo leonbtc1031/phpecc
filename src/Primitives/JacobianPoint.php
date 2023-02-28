@@ -275,8 +275,24 @@ class JacobianPoint
     /**
      * Bitwise Right Shift.
      */
+
+    /*
     public function gmp_shiftr(\GMP | int $x, \GMP | int $n): \GMP
     {
+        return gmp_div($x, gmp_pow(2, $n));
+    }
+    */
+
+    public function gmp_shiftr($x, $n)
+    {
+        if (!(is_int($x) || is_a($x, '\GMP'))) {
+            throw new \InvalidArgumentException('$x must be an integer or a GMP object');
+        }
+        if (!(is_int($n) || is_a($n, '\GMP'))) {
+            throw new \InvalidArgumentException('$n must be an integer or a GMP object');
+        }
+        $x = is_int($x) ? gmp_init($x) : $x;
+        $n = is_int($n) ? gmp_init($n) : $n;
         return gmp_div($x, gmp_pow(2, $n));
     }
 
