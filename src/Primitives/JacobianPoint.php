@@ -680,59 +680,21 @@ class JacobianPoint
         return $sum->equals($this->getZero()) ? false : $sum->toAffine();
     }
     */
-    public function multiplyAndAddUnsafe(Point $Q, \GMP $a, \GMP $b): bool | JacobianPoint
+    public function multiplyAndAddUnsafe(Point $Q, \GMP $a, \GMP $b)
     {
         $P = $this->getBase();
 
         if (gmp_cmp($a, 0) === 0 || gmp_cmp($a, 1) === 0 || !$this->equals($P)) {
-            return false;
+            throw new \RuntimeException('Invalid arguments');
         }
 
-        if (gmp_cmp($b, 0) === 0) {
-            return $this;
-        }
+        $R1 = $this->multiply($a);
+        $R2 = $Q->multiply($b);
 
-        $Rx = $this->getX();
-        $Ry = $this->getY();
-        $Rz = $this->getZ();
+        $sum = $R1->add($R2);
 
-        $Sx = $Q->getX();
-        $Sy = $Q->getY();
-        $Sz = $Q->getZ();
-
-        $z12 = gmp_pow($Rz, 2);
-        $u1 = gmp_mul($Rx, $Sz);
-        $u2 = gmp_mul($Sx, $z12);
-
-        $v1 = gmp_mul($Ry, $Sz);
-        $v2 = gmp_mul($Sy, $z12);
-
-        if (gmp_cmp($u1, $u2) !== 0) {
-            $h = gmp_sub($u2, $u1);
-            $s1 = gmp_sub($v2, $v1);
-            $s2 = gmp_sub($Sx, $Rx);
-        } else {
-            $h = gmp_pow($Rx, 2);
-            $h = gmp_mul_ui($h, 3);
-            $h = gmp_add($h, $this->getCurve()->getB());
-
-            $s1 = gmp_mul_ui($Rx, 2);
-            $s1 = gmp_mul($s1, $Ry);
-
-            $s2 = gmp_add($Rx, $Sx);
-        }
-
-        $h2 = gmp_pow($h, 2);
-        $h3 = gmp_mul($h, $h2);
-        $h2u1 = gmp_mul($h2, $u1);
-
-        $Rx = gmp_sub(gmp_sub(gmp_pow($s2, 2), $h3), gmp_mul_ui($u1, 2));
-        $Ry = gmp_sub(gmp_mul($s2, gmp_sub($h2u1, $Rx)), gmp_mul($h3, $v1));
-        $Rz = gmp_mul($Rz, $h);
-
-        return new JacobianPoint($Rx, $Ry, $Rz);
+        return $sum->equals($this->getZero()) ? null : $sum->toAffine();
     }
-
 
     /**
      * Doubles a Jacobian Point when the Curve's A is O,
